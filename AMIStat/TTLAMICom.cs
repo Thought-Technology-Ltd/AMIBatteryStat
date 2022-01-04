@@ -373,7 +373,7 @@ namespace AMIStat
                     closing = true;
                     StopListening();
                     ftd.Close();
-                    
+                    closing = false;
                 }
             }
             catch

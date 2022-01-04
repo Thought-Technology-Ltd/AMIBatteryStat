@@ -314,7 +314,7 @@ namespace AMIStat
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 2200;
+            this.timer1.Interval = 1500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // button2
@@ -353,11 +353,12 @@ namespace AMIStat
             this.Controls.Add(this.button3);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.button2);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmMonitor";
-            this.Text = "TTL-AMIStat";
+            this.Text = "TTL-AMIStat V1.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMonitor_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMonitor_FormClosed);
             this.Load += new System.EventHandler(this.frmMonitor_Load);
@@ -380,7 +381,6 @@ namespace AMIStat
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button btnOpen;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
@@ -400,6 +400,7 @@ namespace AMIStat
         private Timer timer2;
         private Label lblStatus;
         private Label lblSerial;
+        public Timer timer1;
     }
 }
 
