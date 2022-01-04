@@ -1,0 +1,300 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "Thought Technology Ltd."
+            VALUE "FileDescription", "AMIStat"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "TT_AMI_Updater.exe"
+            VALUE "LegalCopyright", "Thought Technology Ltd.  All rights reserved."
+            VALUE "OriginalFilename", "TT_AMI_Updater.exe"
+            VALUE "ProductName", "MyOnyx"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TT_AMI_UPDATER_DIALOG DIALOGEX 0, 0, 183, 196
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "AMIStat"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    RTEXT           "Product:",IDC_PRODUCT_STATIC,15,88,28,8
+    RTEXT           "Serial Number:",IDC_SERIAL_STATIC,7,101,55,8
+    RTEXT           "Current firmware version:",IDC_FWVERSION_STATIC,10,115,88,8
+    CTEXT           "1.0",IDC_FWVERSION_TEXT,103,115,66,9,WS_BORDER
+    GROUPBOX        "",IDC_STATIC,0,1,8,9,NOT WS_VISIBLE
+    LTEXT           "Firmware version to update",IDC_UPDATE_STATIC,0,1,8,8,NOT WS_VISIBLE
+    PUSHBUTTON      "Update",IDC_UPDATE_BUTTON,0,1,6,14,NOT WS_VISIBLE
+    CONTROL         "",IDC_UPDATE_PROGRESS,"msctls_progress32",PBS_SMOOTH | NOT WS_VISIBLE | WS_BORDER,0,1,23,6
+    LTEXT           "Update feedback area",IDC_UPDATE_MSG_TEXT,0,1,8,8,NOT WS_VISIBLE
+    GROUPBOX        "",IDC_STATIC,0,1,18,13,NOT WS_VISIBLE
+    LTEXT           "Upgrade key",IDC_UPGRADE_STATIC,13,1,59,8,NOT WS_VISIBLE
+    PUSHBUTTON      "Upgrade",IDC_UPGRADE_BUTTON,0,1,50,14,NOT WS_VISIBLE
+    CONTROL         "",IDC_UPGRADE_PROGRESS,"msctls_progress32",NOT WS_VISIBLE | WS_BORDER,0,1,116,10
+    LTEXT           "Upgrade feedback area",IDC_UPGRADE_MSG_TEXT,0,1,60,16,NOT WS_VISIBLE
+    DEFPUSHBUTTON   "Exit",IDEXIT,96,164,75,14
+    GROUPBOX        "",IDC_STATIC,3,1,177,187
+    CTEXT           "AMI Devices list",IDC_DEVICELIST_STATIC,31,10,118,8,NOT WS_VISIBLE
+    PUSHBUTTON      "Refresh List",IDC_DEVLIST_REFRESH_BUTTON,132,8,50,14,NOT WS_VISIBLE
+    LTEXT           "Devices List feedback area",IDC_DEVLIST_MSG_TEXT,17,129,134,15
+    CTEXT           "XYZ",IDC_PRODUCT_TEXT,103,87,66,9,WS_BORDER
+    CTEXT           "SN0000",IDC_SERIAL_TEXT,103,101,66,9,WS_BORDER
+    LISTBOX         IDC_DEVLIST_LIST,14,24,154,60,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "1.0",IDC_NEWVERSION_TEXT,0,1,8,9,NOT WS_VISIBLE | WS_BORDER
+    EDITTEXT        IDC_UPGRADE_KEY_EDIT,0,1,6,12,ES_AUTOHSCROLL | NOT WS_VISIBLE
+    DEFPUSHBUTTON   "Open Service Port",IDM_OSP,12,149,76,14,NOT WS_VISIBLE
+    DEFPUSHBUTTON   "Close Service Port",IDM_CSP,96,149,75,14,NOT WS_VISIBLE
+    DEFPUSHBUTTON   "Request Device Info",IDM_RDI,12,166,76,15,NOT WS_VISIBLE
+END
+
+IDD_PROPPAGE_MEDIUM DIALOGEX 0, 0, 210, 154
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    LTEXT           "TODO: layout property page",IDC_STATIC,60,73,90,8
+END
+
+IDD_PROPPAGE_MEDIUM1 DIALOGEX 0, 0, 210, 154
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    LTEXT           "TODO: layout property page",IDC_STATIC,60,73,90,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_TT_AMI_UPDATER_DIALOG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 182
+        VERTGUIDE, 29
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 188
+    END
+
+    IDD_PROPPAGE_MEDIUM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_PROPPAGE_MEDIUM1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_TT_AMI_UPDATER_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOGEX 0, 0, 309, 176
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,198,155,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,252,155,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#include ""res\\TTAMIUpdater.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""      // Standard components\r\n"
+    "#if !defined(_AFXDLL)\r\n"
+    "#include ""afxribbon.rc""   // MFC ribbon and control bar resources\r\n"
+    "#endif\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\TT_AMI_Updater.ico"
+
+#endif    // English (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#include "res\TTAMIUpdater.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"      // Standard components
+#if !defined(_AFXDLL)
+#include "afxribbon.rc"   // MFC ribbon and control bar resources
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

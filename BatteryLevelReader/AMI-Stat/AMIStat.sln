@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.852
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TT_AMI_Updater", "application\TT_AMI_Updater\TT_AMI_Updater.vcxproj", "{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "builder", "builder\builder\builder.vcxproj", "{69976F1E-309F-4E85-B06D-F801C187CD79}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "keyGen", "keyGen\keyGen\keyGen.vcxproj", "{F99BF47B-B201-4F8C-BC33-800A4662C701}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "packager", "packager\packager\packager.vcxproj", "{5FC1761B-897F-465E-A37A-19A7A5017C93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		DebugProduction|x86 = DebugProduction|x86
+		Release|x86 = Release|x86
+		Release-FwUpgradeTool|x86 = Release-FwUpgradeTool|x86
+		ReleaseProduction_BatteryLevel|x86 = ReleaseProduction_BatteryLevel|x86
+		ReleaseProduction|x86 = ReleaseProduction|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.Debug|x86.ActiveCfg = Debug|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.Debug|x86.Build.0 = Debug|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.DebugProduction|x86.ActiveCfg = DebugProduction|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.DebugProduction|x86.Build.0 = DebugProduction|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.Release|x86.ActiveCfg = Release|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.Release|x86.Build.0 = Release|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.Release-FwUpgradeTool|x86.ActiveCfg = Release-FwUpgradeTool|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.Release-FwUpgradeTool|x86.Build.0 = Release-FwUpgradeTool|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.ReleaseProduction_BatteryLevel|x86.ActiveCfg = ReleaseProduction_BatteryLevel|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.ReleaseProduction_BatteryLevel|x86.Build.0 = ReleaseProduction_BatteryLevel|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.ReleaseProduction|x86.ActiveCfg = ReleaseProduction|Win32
+		{EC105EE7-128D-4FAE-A7F8-81A187E30A4B}.ReleaseProduction|x86.Build.0 = ReleaseProduction|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.Debug|x86.ActiveCfg = Debug|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.Debug|x86.Build.0 = Debug|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.DebugProduction|x86.ActiveCfg = DebugProduction|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.DebugProduction|x86.Build.0 = DebugProduction|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.Release|x86.ActiveCfg = Release|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.Release|x86.Build.0 = Release|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.Release-FwUpgradeTool|x86.ActiveCfg = Release-FwUpgradeTool|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.Release-FwUpgradeTool|x86.Build.0 = Release-FwUpgradeTool|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.ReleaseProduction_BatteryLevel|x86.ActiveCfg = ReleaseProduction_BatteryLevel|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.ReleaseProduction_BatteryLevel|x86.Build.0 = ReleaseProduction_BatteryLevel|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.ReleaseProduction|x86.ActiveCfg = ReleaseProduction|Win32
+		{69976F1E-309F-4E85-B06D-F801C187CD79}.ReleaseProduction|x86.Build.0 = ReleaseProduction|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.Debug|x86.ActiveCfg = Debug|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.Debug|x86.Build.0 = Debug|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.DebugProduction|x86.ActiveCfg = DebugProduction|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.DebugProduction|x86.Build.0 = DebugProduction|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.Release|x86.ActiveCfg = Release|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.Release|x86.Build.0 = Release|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.Release-FwUpgradeTool|x86.ActiveCfg = Release-FwUpgradeTool|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.Release-FwUpgradeTool|x86.Build.0 = Release-FwUpgradeTool|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.ReleaseProduction_BatteryLevel|x86.ActiveCfg = ReleaseProduction_BatteryLevel|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.ReleaseProduction_BatteryLevel|x86.Build.0 = ReleaseProduction_BatteryLevel|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.ReleaseProduction|x86.ActiveCfg = ReleaseProduction|Win32
+		{F99BF47B-B201-4F8C-BC33-800A4662C701}.ReleaseProduction|x86.Build.0 = ReleaseProduction|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.Debug|x86.ActiveCfg = Debug|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.Debug|x86.Build.0 = Debug|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.DebugProduction|x86.ActiveCfg = DebugProduction|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.DebugProduction|x86.Build.0 = DebugProduction|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.Release|x86.ActiveCfg = Release|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.Release|x86.Build.0 = Release|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.Release-FwUpgradeTool|x86.ActiveCfg = Release-FwUpgradeTool|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.Release-FwUpgradeTool|x86.Build.0 = Release-FwUpgradeTool|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.ReleaseProduction_BatteryLevel|x86.ActiveCfg = ReleaseProduction_BatteryLevel|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.ReleaseProduction_BatteryLevel|x86.Build.0 = ReleaseProduction_BatteryLevel|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.ReleaseProduction|x86.ActiveCfg = ReleaseProduction|Win32
+		{5FC1761B-897F-465E-A37A-19A7A5017C93}.ReleaseProduction|x86.Build.0 = ReleaseProduction|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {43F1338E-69CA-4588-B447-FEE6FFDE7734}
+	EndGlobalSection
+EndGlobal

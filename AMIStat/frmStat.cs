@@ -1,0 +1,318 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO.Ports;
+using System.Diagnostics;
+using System.Threading;
+using System.IO;
+
+namespace AMIStat
+{
+    public partial class frmMonitor : Form
+    {
+        TTLAMICom amicom = new TTLAMICom();
+        public frmMonitor()
+        {
+            InitializeComponent();
+            amicom.OnLog += onlog;
+            amicom.OnReceived += Amicom_OnReceived;
+            ico = this.Icon;
+        }
+        Icon ico;
+        private void Amicom_OnReceived(COMM_CHANNEL chn,string evt, byte[] b, string s, string ID, Dictionary<string, object> jSon)
+        {
+            try
+            {
+                this.Invoke((MethodInvoker)delegate
+                {
+                    if (ID == AMIJsonCommands.GetBatteryStatusID)
+                    {
+                        RefreshValues();
+                        lblStatus.Text = "Service port: Connected";
+                        lblStatus.ForeColor = Color.Green;
+                        timer2.Enabled = true;
+                        timer1.Enabled = false;
+                        timer1.Enabled = true;
+
+                    }
+                    if (ID == AMIJsonCommands.GetDeviceInfoID)
+                    {
+                        lblSerial.Text = "Serial: " + amicom.DeviceInfo.SerialNumber;
+                    }
+                   
+                    if (!Connected)
+                    {
+                        amicom.cmdGetDeviceInfo();
+                    }
+                    else if (evt!="")
+                    {
+                        AMIBatteryLog bt = new AMIBatteryLog(evt, amicom.DeviceInfo, amicom.BatteryStatus);
+                        try
+                        {
+                            File.AppendAllText(LogFile, bt.Log);
+                        }
+                        catch
+                        {
+                            CriticalFileError();
+                        }
+                    }
+                });
+            }
+            catch
+            {
+
+            }
+        }
+        
+        void RefreshValues()
+        {
+            lblVoltage.Text = "Voltage: " + amicom.BatteryStatus.Voltage + " mA";
+            lblLevel.Text = "Level: " + amicom.BatteryStatus.SOC + " %";
+            lblPower.Text = "Power: " + (amicom.BatteryStatus.Charging? "Charging":"Disconnected");
+            progLevel.Value = amicom.BatteryStatus.SOC;
+        }
+        void onlog(string s)
+        {
+            try
+            {
+                this.Invoke((MethodInvoker)delegate
+                {
+                    textBox1.Text = s + "\r\n" + textBox1.Text;
+                });
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            amicom.Close();
+            this.Enabled = false;
+            while (amicom.isOpen)
+                Application.DoEvents();
+            Application.Exit();
+        }
+
+        bool formLoaded = false;
+        const int waveVOssfets = 300;
+        string LogDir => Application.StartupPath + "\\Log\\";
+        string LogFile => LogDir + "log.csv";
+        
+        private void frmMonitor_Load(object sender, EventArgs e)
+        {
+            comboBox1.DropDown += ComboBox1_DropDown;
+            FillPorts();
+            string pn = Settings1.Default.PortName;
+            if (pn != "" && comboBox1.Items.Contains(pn))
+                comboBox1.SelectedItem = pn;
+
+
+
+                formLoaded = true;
+            if (!Directory.Exists(LogDir))
+                Directory.CreateDirectory(LogDir);
+            if (!File.Exists(LogFile))
+            {
+                try
+                {
+                    File.WriteAllText(LogFile, AMIBatteryLog.LogHeader);
+                }
+                catch
+                {
+                    CriticalFileError();
+                }
+            }
+            else
+            {
+                File.Copy(LogFile,LogDir+ "Log_Backup_" + DateTime.Now.Ticks + ".csv");
+            }
+        }
+        bool errorIsIssued = false;
+        void CriticalFileError()
+        {
+            if (errorIsIssued || !btnClose.Enabled) return;
+            errorIsIssued = true;
+            MessageBox.Show("The log file is in use.\nplease close the log file and start application again.", "Critical error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            ClosePort();
+            /*for (int i = 0; i < 100;i++)
+            {
+                Thread.Sleep(1);
+                Application.DoEvents();
+            }*/
+            errorIsIssued = false;
+        }
+        List<AMIBatteryLog> Logs = new List<AMIBatteryLog>();
+        void LoadLogs()
+        {
+            string[] ss = File.ReadAllLines(LogFile);
+            for (int i = 1; i < ss.Length; i++)
+                Logs.Add(new AMIBatteryLog(ss[i]));
+        }
+        
+        private void ComboBox1_DropDown(object sender, EventArgs e)
+        {
+            FillPorts();
+        }
+
+        void FillPorts()
+        {
+            var ss = amicom.DeviceNames;
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(ss);
+        }
+
+        private void btnOpen_Click(object sender, EventArgs e)
+        {
+            if (amicom.Open(comboBox1.Text))
+            {
+
+                comboBox1.Enabled = btnOpen.Enabled = false;
+                btnClose.Enabled = true;
+              
+                Settings1.Default.PortName = comboBox1.Text;
+                Settings1.Default.Save();
+
+            }
+        }
+void ClosePort()
+        {
+            this.Enabled = false;
+            amicom.Close();
+            while (amicom.isOpen)
+                Application.DoEvents();
+            comboBox1.Enabled = btnOpen.Enabled = true;
+            btnClose.Enabled = false;
+            this.Enabled = true;
+        }
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+
+            ClosePort();
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            amicom.cmdGetDeviceInfo();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            amicom.cmdSwitchToServicePort();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            amicom.cmdGetBatteryStatus();
+            //Text = amicom.port.RtsEnable ? "On" : "Off";
+        }
+
+        private void frmMonitor_FormClosed(object sender, FormClosedEventArgs e)
+        {
+//            amicom.StopListening();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            amicom.cmdSetRelay(true);
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            amicom.cmdSetRelay(false);
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            //            this.Icon = ico;
+            lblStatus.ForeColor = Color.Black;
+
+            timer2.Enabled = false;
+        }
+        bool Connected
+        {
+            get => amicom.DeviceInfo.ConnectionStatus;
+            set => amicom.DeviceInfo.ConnectionStatus = value;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            lblStatus.ForeColor = Color.Red;
+            lblStatus.Text = "Service port: Disconnected";
+            if(Connected)//Disconnection event
+            {
+                AMIBatteryLog b = new AMIBatteryLog("DeviceDisconnected", amicom.DeviceInfo, amicom.BatteryStatus);
+                try
+                {
+                    File.AppendAllText(LogFile, b.Log);
+                }
+                catch
+                {
+                    CriticalFileError();
+                }
+            }
+            Connected = false;
+
+        }
+
+        private void frmMonitor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ClosePort();
+        }
+    }
+    class AMIBatteryLog
+    {
+        public string Serial;
+        public int Voltage;
+        public int Percentage;
+        public string ChargerStatus;
+        public DateTime DateTime;
+        public string Event;
+
+
+        public static string LogHeader => "Event,DateTime,DeviceSerial,Voltage,Percentage,Charger";
+        public string Log =>"\r\n"+Event+","+ DateTime.ToString() + "," + Serial + "," + Voltage + "," + Percentage + "," + ChargerStatus;
+        public AMIBatteryLog(string Event,DeviceInfo di, BatteryStatus bs)
+        {
+            this.Event = Event;
+            Serial = di.SerialNumber;
+            Voltage = bs.Voltage;
+            Percentage = bs.SOC;
+            ChargerStatus = bs.Charging ? "Charging" : "Discoonected";
+            DateTime = DateTime.Now;
+        }
+
+        public AMIBatteryLog(string logRecord)
+        {
+            string[] ss = logRecord.Split(new string[] { ","}, StringSplitOptions.RemoveEmptyEntries);
+            if (ss.Length != 6) return;
+            int i = 0;
+            this.Event = ss[i++];
+            DateTime = Convert.ToDateTime(ss[i++]);
+            Serial = ss[i++];
+            Voltage = Convert.ToInt32(ss[i++]);
+            Percentage= Convert.ToInt32(ss[i++]);
+            ChargerStatus = ss[i++];
+        }
+    }
+
+    }
