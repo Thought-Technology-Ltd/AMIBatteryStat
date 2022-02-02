@@ -38,10 +38,12 @@ namespace AMIStat
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.chkUartLogEnable = new System.Windows.Forms.CheckBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.chkAvg = new System.Windows.Forms.CheckBox();
             this.button5 = new System.Windows.Forms.Button();
             this.lblSerial = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
@@ -55,14 +57,16 @@ namespace AMIStat
             this.lblLevel = new System.Windows.Forms.Label();
             this.progLevel = new System.Windows.Forms.ProgressBar();
             this.lblVoltage = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnLog = new System.Windows.Forms.Button();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.btnClear = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -111,6 +115,7 @@ namespace AMIStat
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.chkUartLogEnable);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel3.Location = new System.Drawing.Point(8, 69);
@@ -118,6 +123,17 @@ namespace AMIStat
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(191, 194);
             this.panel3.TabIndex = 1;
+            // 
+            // chkUartLogEnable
+            // 
+            this.chkUartLogEnable.AutoSize = true;
+            this.chkUartLogEnable.Location = new System.Drawing.Point(97, 57);
+            this.chkUartLogEnable.Name = "chkUartLogEnable";
+            this.chkUartLogEnable.Size = new System.Drawing.Size(91, 17);
+            this.chkUartLogEnable.TabIndex = 11;
+            this.chkUartLogEnable.Text = "Show uart log";
+            this.chkUartLogEnable.UseVisualStyleBackColor = true;
+            this.chkUartLogEnable.CheckedChanged += new System.EventHandler(this.chkUartLogEnable_CheckedChanged);
             // 
             // numericUpDown1
             // 
@@ -145,6 +161,7 @@ namespace AMIStat
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.chkAvg);
             this.panel2.Controls.Add(this.button5);
             this.panel2.Controls.Add(this.lblSerial);
             this.panel2.Controls.Add(this.lblStatus);
@@ -160,6 +177,17 @@ namespace AMIStat
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(191, 327);
             this.panel2.TabIndex = 0;
+            // 
+            // chkAvg
+            // 
+            this.chkAvg.AutoSize = true;
+            this.chkAvg.Location = new System.Drawing.Point(130, 163);
+            this.chkAvg.Name = "chkAvg";
+            this.chkAvg.Size = new System.Drawing.Size(48, 17);
+            this.chkAvg.TabIndex = 12;
+            this.chkAvg.Text = "AVG";
+            this.chkAvg.UseVisualStyleBackColor = true;
+            this.chkAvg.CheckedChanged += new System.EventHandler(this.chkAvg_CheckedChanged);
             // 
             // button5
             // 
@@ -292,24 +320,25 @@ namespace AMIStat
             this.lblVoltage.TabIndex = 1;
             this.lblVoltage.Text = "Voltage: ";
             // 
-            // button1
+            // btnLog
             // 
-            this.button1.Location = new System.Drawing.Point(299, 320);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(161, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Read";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnLog.Location = new System.Drawing.Point(222, 302);
+            this.btnLog.Name = "btnLog";
+            this.btnLog.Size = new System.Drawing.Size(161, 23);
+            this.btnLog.TabIndex = 5;
+            this.btnLog.Text = "Log";
+            this.btnLog.UseVisualStyleBackColor = true;
+            this.btnLog.Click += new System.EventHandler(this.button1_Click);
             // 
-            // textBox1
+            // txtLog
             // 
-            this.textBox1.Location = new System.Drawing.Point(222, 12);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(591, 313);
-            this.textBox1.TabIndex = 10;
+            this.txtLog.Location = new System.Drawing.Point(222, 12);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtLog.Size = new System.Drawing.Size(591, 284);
+            this.txtLog.TabIndex = 10;
+            this.txtLog.WordWrap = false;
             // 
             // timer1
             // 
@@ -342,14 +371,25 @@ namespace AMIStat
             this.timer2.Interval = 500;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(389, 302);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(161, 23);
+            this.btnClear.TabIndex = 11;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
             // frmMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(209, 354);
+            this.ClientSize = new System.Drawing.Size(835, 354);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.txtLog);
+            this.Controls.Add(this.btnLog);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.button2);
@@ -358,12 +398,14 @@ namespace AMIStat
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMonitor";
-            this.Text = "TTL-AMIStat V1.1";
+            this.Text = "TTL-AMIStat V1.5";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMonitor_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMonitor_FormClosed);
             this.Load += new System.EventHandler(this.frmMonitor_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -385,8 +427,8 @@ namespace AMIStat
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private Button button1;
-        private TextBox textBox1;
+        private Button btnLog;
+        private TextBox txtLog;
         private Button button3;
         private Button button2;
         private Button button4;
@@ -401,6 +443,9 @@ namespace AMIStat
         private Label lblStatus;
         private Label lblSerial;
         public Timer timer1;
+        private CheckBox chkUartLogEnable;
+        private Button btnClear;
+        private CheckBox chkAvg;
     }
 }
 

@@ -27,6 +27,8 @@ namespace AMIStat
         public int Voltage;
         public bool Charging;
         public bool wasCharging;
+        public double avgPercentage;
+        public bool avgPercentageIsValid;
 
     }
 
@@ -35,6 +37,7 @@ namespace AMIStat
     {
         public string ProductNumber;
         public string SerialNumber;
+        public string FWVersion;
         public int ProductType;
         public bool ConnectionStatus;
         public bool DeviceWasConnected;
@@ -50,18 +53,34 @@ namespace AMIStat
 
     public delegate void evtOnReceived(COMM_CHANNEL chn,string EvtStatus, byte[] b, string s,string ID, Dictionary<string, object> jSon);
     public delegate void evtNewDeviceConnected(DeviceInfo di);
+    public delegate void evtChargingValueIsValid();
     class TTLAMICom
     {
+        const int BatteryPrecentageAverageWindowSize = 5;
+        int[] BatteryPercentageArray = new int[BatteryPrecentageAverageWindowSize];
+        int bpa = 0;
+        bool _avgPercentageIsValid;
+        public bool avgPercentageIsValid
+        {
+            get => _avgPercentageIsValid;
+            set
+            {
+                _avgPercentageIsValid = value;
+                 bpa = 0;
+            }
+        }
 
         public event evtOnReceived OnReceived;
         public event evtNewDeviceConnected OnNewDeviceConnected;
+        public event evtChargingValueIsValid OnChargingValueIsValid;
         
         public delegate void evtLog(string log);
         public event evtLog OnLog;
         FTDI ftd = new FTDI();
+        public bool EnableDebugLog = false;
         void Log(string s)
         {
-            return;
+            if(!EnableDebugLog)return;
             if (OnLog != null && !closing)
                 OnLog(s);
         }
@@ -273,6 +292,31 @@ namespace AMIStat
                                             }
 
                                             BatteryStatus = new BatteryStatus { wasCharging= wasCharging,SOC = (int)content["SOC"], Voltage = (int)content["Voltage"], Charging = charging };
+                                            BatteryPercentageArray[bpa] = BatteryStatus.SOC;
+                                            bpa++;
+                                            if (bpa >= BatteryPercentageArray.Length)
+                                            {
+                                                if(!avgPercentageIsValid)
+                                                {
+                                                    if (OnChargingValueIsValid != null && !closing)
+                                                        OnChargingValueIsValid();
+
+                                                }
+                                                avgPercentageIsValid = true;
+                                            }
+                                            bpa %= BatteryPercentageArray.Length;
+                                            int sum = 0;
+                                            for (int i = 0; i < BatteryPercentageArray.Length; i++)
+                                                sum += BatteryPercentageArray[i];
+                                            BatteryStatus.avgPercentage = ((double)sum) / BatteryPercentageArray.Length;
+                                            BatteryStatus.avgPercentageIsValid = avgPercentageIsValid;
+                                            if(!DeviceInfo.ConnectionStatus)
+                                            {
+                                                evt = "DeviceConnected";
+                                                waitToStableBatteryInfoCounter = 0;
+                                                avgPercentageIsValid = false;
+                                            }
+                                            DeviceInfo.ConnectionStatus = true;
                                             break;
                                         case AMIJsonCommands.GetDeviceInfoID:
                                             bool devicewasconnected = DeviceInfo.ConnectionStatus;
@@ -282,9 +326,10 @@ namespace AMIStat
                                             {
                                                 evt = "DeviceConnected";
                                                 waitToStableBatteryInfoCounter = 0;
+                                                avgPercentageIsValid = false;
                                             }
 
-                                            DeviceInfo = new DeviceInfo { DeviceWasConnected=devicewasconnected, ConnectionStatus = true, ProductNumber = (string)content["ProductNumber"], SerialNumber = (string)content["SerialNumber"], ProductType = (int)content["ProductType"] };
+                                            DeviceInfo = new DeviceInfo { DeviceWasConnected=devicewasconnected, ConnectionStatus = true, ProductNumber = (string)content["ProductNumber"], FWVersion = (string)content["FwMainVersion"], SerialNumber = (string)content["SerialNumber"], ProductType = (int)content["ProductType"] };
 
 
                                             if (OnNewDeviceConnected != null && !devicewasconnected && !closing)

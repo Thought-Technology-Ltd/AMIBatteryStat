@@ -22,8 +22,15 @@ namespace AMIStat
             InitializeComponent();
             amicom.OnLog += onlog;
             amicom.OnReceived += Amicom_OnReceived;
+            amicom.OnChargingValueIsValid += Amicom_OnChargingValueIsValid;
             ico = this.Icon;
         }
+
+        private void Amicom_OnChargingValueIsValid()
+        {
+
+        }
+
         Icon ico;
         private void Amicom_OnReceived(COMM_CHANNEL chn,string evt, byte[] b, string s, string ID, Dictionary<string, object> jSon)
         {
@@ -39,6 +46,14 @@ namespace AMIStat
                         timer2.Enabled = true;
                         timer1.Enabled = false;
                         timer1.Enabled = true;
+                        if(LogRequested)
+                        {
+                            AMIBatteryLog bt = new AMIBatteryLog("UserRequest", amicom.DeviceInfo, amicom.BatteryStatus);
+                            AddLogRecord(bt);
+                            btnLog.Enabled = true;
+                            LogRequested = false;
+                        }
+
 
                     }
                     if (ID == AMIJsonCommands.GetDeviceInfoID)
@@ -48,6 +63,8 @@ namespace AMIStat
                    
                     if (!Connected)
                     {
+                        LogRequested = false;
+                        btnLog.Enabled = true;
                         amicom.cmdGetDeviceInfo();
                     }
                     else if (evt!="")
@@ -55,7 +72,7 @@ namespace AMIStat
                         AMIBatteryLog bt = new AMIBatteryLog(evt, amicom.DeviceInfo, amicom.BatteryStatus);
                         try
                         {
-                            File.AppendAllText(LogFile, bt.Log);
+                            AddLogRecord(bt);
                         }
                         catch
                         {
@@ -72,8 +89,10 @@ namespace AMIStat
         
         void RefreshValues()
         {
-            lblVoltage.Text = "Voltage: " + amicom.BatteryStatus.Voltage + " mA";
-            lblLevel.Text = "Level: " + amicom.BatteryStatus.SOC + " %";
+            lblVoltage.Text = "Voltage: " + (amicom.avgPercentageIsValid ? +amicom.BatteryStatus.Voltage + " mV" : "Waiting ...") ;
+            lblLevel.Text = "Level: " +(amicom.avgPercentageIsValid ?
+                (chkAvg.Checked? amicom.BatteryStatus.avgPercentage : amicom.BatteryStatus.SOC) + " %"
+                :"Waiting ...");
             lblPower.Text = "Power: " + (amicom.BatteryStatus.Charging? "Charging":"Disconnected");
             progLevel.Value = amicom.BatteryStatus.SOC;
         }
@@ -83,7 +102,7 @@ namespace AMIStat
             {
                 this.Invoke((MethodInvoker)delegate
                 {
-                    textBox1.Text = s + "\r\n" + textBox1.Text;
+                    txtLog.Text = s + "\r\n" + txtLog.Text;
                 });
             }
             catch
@@ -108,7 +127,11 @@ namespace AMIStat
         
         private void frmMonitor_Load(object sender, EventArgs e)
         {
-            comboBox1.DropDown += ComboBox1_DropDown;
+             comboBox1.DropDown += ComboBox1_DropDown;
+            amicom.EnableDebugLog = chkUartLogEnable.Checked = Settings1.Default.EnableDebugLog;
+            chkAvg.Checked = Settings1.Default.AverageEnable;
+            btnLog.Enabled = !chkUartLogEnable.Checked;
+            txtLog.Font = new Font(FontFamily.GenericMonospace, txtLog.Font.Size);
             FillPorts();
             string pn = Settings1.Default.PortName;
             if (pn != "" && comboBox1.Items.Contains(pn))
@@ -124,6 +147,7 @@ namespace AMIStat
                 try
                 {
                     File.WriteAllText(LogFile, AMIBatteryLog.LogHeader);
+                    
                 }
                 catch
                 {
@@ -201,7 +225,9 @@ void ClosePort()
 
         private void button1_Click(object sender, EventArgs e)
         {
-            amicom.cmdGetDeviceInfo();
+            if (amicom.EnableDebugLog) return;
+            LogRequested = true;
+            btnLog.Enabled = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -248,22 +274,33 @@ void ClosePort()
 
             timer2.Enabled = false;
         }
+        void AddLogRecord(AMIBatteryLog log)
+        {
+            File.AppendAllText(LogFile, log.Log);
+            if (!amicom.EnableDebugLog)
+                txtLog.Text = log.LogText + txtLog.Text;
+        }
         bool Connected
         {
             get => amicom.DeviceInfo.ConnectionStatus;
             set => amicom.DeviceInfo.ConnectionStatus = value;
         }
-
+        bool LogRequested = false;
         private void timer1_Tick(object sender, EventArgs e)
         {
             lblStatus.ForeColor = Color.Red;
             lblStatus.Text = "Service port: Disconnected";
-            if(Connected)//Disconnection event
+            amicom.avgPercentageIsValid = false;
+
+            if (Connected)//Disconnection event
             {
+                LogRequested = false;
+                btnLog.Enabled = true;
+
                 AMIBatteryLog b = new AMIBatteryLog("DeviceDisconnected", amicom.DeviceInfo, amicom.BatteryStatus);
                 try
                 {
-                    File.AppendAllText(LogFile, b.Log);
+                    AddLogRecord(b);
                 }
                 catch
                 {
@@ -278,6 +315,30 @@ void ClosePort()
         {
             ClosePort();
         }
+
+        private void chkUartLogEnable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (formLoaded)
+            {
+                amicom.EnableDebugLog = Settings1.Default.EnableDebugLog = chkUartLogEnable.Checked;
+                btnLog.Enabled = !chkUartLogEnable.Checked;
+                Settings1.Default.Save();
+            }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            txtLog.Text = "";
+        }
+
+        private void chkAvg_CheckedChanged(object sender, EventArgs e)
+        {
+            if (formLoaded)
+            {
+                Settings1.Default.AverageEnable = chkAvg.Checked;
+                Settings1.Default.Save();
+            }
+        }
     }
     class AMIBatteryLog
     {
@@ -287,14 +348,17 @@ void ClosePort()
         public string ChargerStatus;
         public DateTime DateTime;
         public string Event;
+        public string FWVersion;
 
 
-        public static string LogHeader => "Event,DateTime,DeviceSerial,Voltage,Percentage,Charger";
-        public string Log =>"\r\n"+Event+","+ DateTime.ToString() + "," + Serial + "," + Voltage + "," + Percentage + "," + ChargerStatus;
+        public static string LogHeader => "Event,DateTime,DeviceSerial,Voltage,Percentage,Charger,FWVersion";
+        public string Log => "\r\n" + Event + "," + DateTime.ToString() + "," + Serial + "," + Voltage + "," + Percentage + "," + ChargerStatus + "," + FWVersion;
+        public string LogText =>string.Format("\r\n{0,-20}{1,-15}{2,-10}{3,-6}{4,-4}{5,-15}{6,-15}", Event ,  DateTime.ToString() , Serial , Voltage , Percentage , ChargerStatus,FWVersion);
         public AMIBatteryLog(string Event,DeviceInfo di, BatteryStatus bs)
         {
             this.Event = Event;
             Serial = di.SerialNumber;
+            FWVersion = di.FWVersion;
             Voltage = bs.Voltage;
             Percentage = bs.SOC;
             ChargerStatus = bs.Charging ? "Charging" : "Discoonected";

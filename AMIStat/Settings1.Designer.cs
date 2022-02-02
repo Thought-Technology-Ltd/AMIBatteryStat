@@ -34,5 +34,41 @@ namespace AMIStat {
                 this["PortName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EnableDebugLog {
+            get {
+                return ((bool)(this["EnableDebugLog"]));
+            }
+            set {
+                this["EnableDebugLog"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AverageEnable {
+            get {
+                return ((bool)(this["AverageEnable"]));
+            }
+            set {
+                this["AverageEnable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Setting {
+            get {
+                return ((bool)(this["Setting"]));
+            }
+            set {
+                this["Setting"] = value;
+            }
+        }
     }
 }
