@@ -42,6 +42,7 @@ namespace AMIStat
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.chkRestrictedevent = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.chkAvg = new System.Windows.Forms.CheckBox();
             this.button5 = new System.Windows.Forms.Button();
@@ -64,6 +65,8 @@ namespace AMIStat
             this.button3 = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.btnClear = new System.Windows.Forms.Button();
+            this.lblWarning = new System.Windows.Forms.Label();
+            this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -127,7 +130,8 @@ namespace AMIStat
             // chkUartLogEnable
             // 
             this.chkUartLogEnable.AutoSize = true;
-            this.chkUartLogEnable.Location = new System.Drawing.Point(97, 57);
+            this.chkUartLogEnable.Enabled = false;
+            this.chkUartLogEnable.Location = new System.Drawing.Point(48, 84);
             this.chkUartLogEnable.Name = "chkUartLogEnable";
             this.chkUartLogEnable.Size = new System.Drawing.Size(91, 17);
             this.chkUartLogEnable.TabIndex = 11;
@@ -159,6 +163,18 @@ namespace AMIStat
             this.panel4.Size = new System.Drawing.Size(44, 263);
             this.panel4.TabIndex = 10;
             // 
+            // chkRestrictedevent
+            // 
+            this.chkRestrictedevent.AutoSize = true;
+            this.chkRestrictedevent.Enabled = false;
+            this.chkRestrictedevent.Location = new System.Drawing.Point(565, 337);
+            this.chkRestrictedevent.Name = "chkRestrictedevent";
+            this.chkRestrictedevent.Size = new System.Drawing.Size(91, 17);
+            this.chkRestrictedevent.TabIndex = 12;
+            this.chkRestrictedevent.Text = "Restricted log";
+            this.chkRestrictedevent.UseVisualStyleBackColor = true;
+            this.chkRestrictedevent.CheckedChanged += new System.EventHandler(this.chkRestrictedevent_CheckedChanged);
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.chkAvg);
@@ -175,24 +191,25 @@ namespace AMIStat
             this.panel2.Location = new System.Drawing.Point(11, 12);
             this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(191, 327);
+            this.panel2.Size = new System.Drawing.Size(191, 355);
             this.panel2.TabIndex = 0;
             // 
             // chkAvg
             // 
             this.chkAvg.AutoSize = true;
-            this.chkAvg.Location = new System.Drawing.Point(130, 163);
+            this.chkAvg.Enabled = false;
+            this.chkAvg.Location = new System.Drawing.Point(22, 140);
             this.chkAvg.Name = "chkAvg";
-            this.chkAvg.Size = new System.Drawing.Size(48, 17);
+            this.chkAvg.Size = new System.Drawing.Size(129, 17);
             this.chkAvg.TabIndex = 12;
-            this.chkAvg.Text = "AVG";
+            this.chkAvg.Text = "Show average values";
             this.chkAvg.UseVisualStyleBackColor = true;
             this.chkAvg.CheckedChanged += new System.EventHandler(this.chkAvg_CheckedChanged);
             // 
             // button5
             // 
             this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(106, 261);
+            this.button5.Location = new System.Drawing.Point(106, 290);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(72, 23);
             this.button5.TabIndex = 9;
@@ -204,7 +221,7 @@ namespace AMIStat
             // 
             this.lblSerial.AutoSize = true;
             this.lblSerial.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSerial.Location = new System.Drawing.Point(19, 229);
+            this.lblSerial.Location = new System.Drawing.Point(19, 258);
             this.lblSerial.Name = "lblSerial";
             this.lblSerial.Size = new System.Drawing.Size(49, 16);
             this.lblSerial.TabIndex = 6;
@@ -214,7 +231,7 @@ namespace AMIStat
             // 
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(19, 207);
+            this.lblStatus.Location = new System.Drawing.Point(19, 236);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(83, 16);
             this.lblStatus.TabIndex = 5;
@@ -223,7 +240,7 @@ namespace AMIStat
             // button4
             // 
             this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(18, 261);
+            this.button4.Location = new System.Drawing.Point(18, 290);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(68, 23);
             this.button4.TabIndex = 8;
@@ -233,7 +250,7 @@ namespace AMIStat
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(17, 290);
+            this.btnExit.Location = new System.Drawing.Point(17, 319);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(161, 23);
             this.btnExit.TabIndex = 4;
@@ -245,7 +262,7 @@ namespace AMIStat
             // 
             this.lblPower.AutoSize = true;
             this.lblPower.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPower.Location = new System.Drawing.Point(19, 184);
+            this.lblPower.Location = new System.Drawing.Point(19, 213);
             this.lblPower.Name = "lblPower";
             this.lblPower.Size = new System.Drawing.Size(49, 16);
             this.lblPower.TabIndex = 3;
@@ -297,7 +314,7 @@ namespace AMIStat
             // 
             this.lblLevel.AutoSize = true;
             this.lblLevel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLevel.Location = new System.Drawing.Point(19, 162);
+            this.lblLevel.Location = new System.Drawing.Point(19, 191);
             this.lblLevel.Name = "lblLevel";
             this.lblLevel.Size = new System.Drawing.Size(44, 16);
             this.lblLevel.TabIndex = 2;
@@ -314,7 +331,7 @@ namespace AMIStat
             // 
             this.lblVoltage.AutoSize = true;
             this.lblVoltage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVoltage.Location = new System.Drawing.Point(19, 141);
+            this.lblVoltage.Location = new System.Drawing.Point(19, 170);
             this.lblVoltage.Name = "lblVoltage";
             this.lblVoltage.Size = new System.Drawing.Size(61, 16);
             this.lblVoltage.TabIndex = 1;
@@ -322,9 +339,9 @@ namespace AMIStat
             // 
             // btnLog
             // 
-            this.btnLog.Location = new System.Drawing.Point(222, 302);
+            this.btnLog.Location = new System.Drawing.Point(222, 333);
             this.btnLog.Name = "btnLog";
-            this.btnLog.Size = new System.Drawing.Size(161, 23);
+            this.btnLog.Size = new System.Drawing.Size(81, 23);
             this.btnLog.TabIndex = 5;
             this.btnLog.Text = "Log";
             this.btnLog.UseVisualStyleBackColor = true;
@@ -336,7 +353,7 @@ namespace AMIStat
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtLog.Size = new System.Drawing.Size(591, 284);
+            this.txtLog.Size = new System.Drawing.Size(591, 305);
             this.txtLog.TabIndex = 10;
             this.txtLog.WordWrap = false;
             // 
@@ -348,7 +365,7 @@ namespace AMIStat
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(297, 357);
+            this.button2.Location = new System.Drawing.Point(565, 156);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(161, 23);
             this.button2.TabIndex = 6;
@@ -373,19 +390,40 @@ namespace AMIStat
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(389, 302);
+            this.btnClear.Location = new System.Drawing.Point(309, 333);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(161, 23);
+            this.btnClear.Size = new System.Drawing.Size(81, 23);
             this.btnClear.TabIndex = 11;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
+            // lblWarning
+            // 
+            this.lblWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWarning.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblWarning.Location = new System.Drawing.Point(309, 234);
+            this.lblWarning.Name = "lblWarning";
+            this.lblWarning.Size = new System.Drawing.Size(411, 52);
+            this.lblWarning.TabIndex = 12;
+            this.lblWarning.Text = "Please unplug the charger";
+            this.lblWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblWarning.Visible = false;
+            // 
+            // timer3
+            // 
+            this.timer3.Enabled = true;
+            this.timer3.Interval = 500;
+            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
+            // 
             // frmMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(835, 354);
+            this.ClientSize = new System.Drawing.Size(835, 378);
+            this.Controls.Add(this.chkRestrictedevent);
+            this.Controls.Add(this.lblWarning);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.txtLog);
@@ -398,7 +436,7 @@ namespace AMIStat
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMonitor";
-            this.Text = "TTL-AMIStat V1.5";
+            this.Text = "TTL-AMIStat V1.7";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMonitor_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMonitor_FormClosed);
             this.Load += new System.EventHandler(this.frmMonitor_Load);
@@ -446,6 +484,9 @@ namespace AMIStat
         private CheckBox chkUartLogEnable;
         private Button btnClear;
         private CheckBox chkAvg;
+        private CheckBox chkRestrictedevent;
+        private Label lblWarning;
+        private Timer timer3;
     }
 }
 

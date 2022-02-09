@@ -28,7 +28,8 @@ namespace AMIStat
         public bool Charging;
         public bool wasCharging;
         public double avgPercentage;
-        public bool avgPercentageIsValid;
+        public double avgVoltage;
+        public bool avgIsValid;
 
     }
 
@@ -56,17 +57,21 @@ namespace AMIStat
     public delegate void evtChargingValueIsValid();
     class TTLAMICom
     {
-        const int BatteryPrecentageAverageWindowSize = 5;
-        int[] BatteryPercentageArray = new int[BatteryPrecentageAverageWindowSize];
+        const int BatteryPrecentageAverageWindowSize = 10;
+        public int[] BatteryPercentageArray = new int[BatteryPrecentageAverageWindowSize];
+        public int[] BatteryVoltgeArray = new int[BatteryPrecentageAverageWindowSize];
+        public int AvgCounter => avgIsValid ? BatteryPrecentageAverageWindowSize : bpa;
         int bpa = 0;
-        bool _avgPercentageIsValid;
-        public bool avgPercentageIsValid
+        bool _avgIsValid;
+        public bool avgIsValid
         {
-            get => _avgPercentageIsValid;
+            get => _avgIsValid;
             set
             {
-                _avgPercentageIsValid = value;
-                 bpa = 0;
+                _avgIsValid = value;
+                 bpa = -1;
+               // for (int i = 0; i < BatteryVoltgeArray.Length; i++)
+                  //  BatteryVoltgeArray[i] = BatteryPercentageArray[i] = 0;
             }
         }
 
@@ -290,31 +295,40 @@ namespace AMIStat
                                                 if (wasCharging && !charging)
                                                     evt = "ChargerDisconnected";
                                             }
-
+                                            if(bpa<0)
+                                            {
+                                                bpa = 0;
+                                                break;
+                                            }
                                             BatteryStatus = new BatteryStatus { wasCharging= wasCharging,SOC = (int)content["SOC"], Voltage = (int)content["Voltage"], Charging = charging };
                                             BatteryPercentageArray[bpa] = BatteryStatus.SOC;
+                                            BatteryVoltgeArray[bpa] = BatteryStatus.Voltage;
+                                            
                                             bpa++;
                                             if (bpa >= BatteryPercentageArray.Length)
                                             {
-                                                if(!avgPercentageIsValid)
+                                                if(!avgIsValid)
                                                 {
+                                                    avgIsValid = true;
                                                     if (OnChargingValueIsValid != null && !closing)
                                                         OnChargingValueIsValid();
-
                                                 }
-                                                avgPercentageIsValid = true;
                                             }
                                             bpa %= BatteryPercentageArray.Length;
                                             int sum = 0;
                                             for (int i = 0; i < BatteryPercentageArray.Length; i++)
                                                 sum += BatteryPercentageArray[i];
                                             BatteryStatus.avgPercentage = ((double)sum) / BatteryPercentageArray.Length;
-                                            BatteryStatus.avgPercentageIsValid = avgPercentageIsValid;
+                                            sum = 0;
+                                            for (int i = 0; i < BatteryPercentageArray.Length; i++)
+                                                sum += BatteryVoltgeArray[i];
+                                            BatteryStatus.avgVoltage = ((double)sum) / BatteryPercentageArray.Length;
+                                            BatteryStatus.avgIsValid = avgIsValid;
                                             if(!DeviceInfo.ConnectionStatus)
                                             {
                                                 evt = "DeviceConnected";
                                                 waitToStableBatteryInfoCounter = 0;
-                                                avgPercentageIsValid = false;
+                                                avgIsValid = false;
                                             }
                                             DeviceInfo.ConnectionStatus = true;
                                             break;
@@ -326,7 +340,7 @@ namespace AMIStat
                                             {
                                                 evt = "DeviceConnected";
                                                 waitToStableBatteryInfoCounter = 0;
-                                                avgPercentageIsValid = false;
+                                                avgIsValid = false;
                                             }
 
                                             DeviceInfo = new DeviceInfo { DeviceWasConnected=devicewasconnected, ConnectionStatus = true, ProductNumber = (string)content["ProductNumber"], FWVersion = (string)content["FwMainVersion"], SerialNumber = (string)content["SerialNumber"], ProductType = (int)content["ProductType"] };

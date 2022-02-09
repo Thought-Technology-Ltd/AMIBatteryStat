@@ -49,7 +49,7 @@ namespace AMIStat {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool AverageEnable {
             get {
                 return ((bool)(this["AverageEnable"]));
@@ -61,13 +61,13 @@ namespace AMIStat {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RestrictedEventEnable {
             get {
-                return ((bool)(this["Setting"]));
+                return ((bool)(this["RestrictedEventEnable"]));
             }
             set {
-                this["Setting"] = value;
+                this["RestrictedEventEnable"] = value;
             }
         }
     }
